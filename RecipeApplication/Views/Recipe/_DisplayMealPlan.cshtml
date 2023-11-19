@@ -1,0 +1,51 @@
+﻿@model RecipeApplication.Models.ShowMealPlan
+
+<div class="sidebar" id="sidebar">
+    <h3>Today's Meal Plan</h3>
+
+    <hr>
+
+    <div id="sidebar-body">
+        <div class="meal" id="breakfast">
+            <h5>Breakfast</h5>
+            <ul id="breakfast-list">
+                <!-- List items will be appended here -->
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="meal" id="lunch">
+            <h5>Lunch</h5>
+            <ul id="lunch-list">
+                <!-- List items will be appended here -->
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="meal" id="dinner">
+            <h5>Dinner</h5>
+            <ul id="dinner-list">
+                <!-- List items will be appended here -->
+            </ul>
+        </div>
+
+        <hr>
+
+        <div id="nutrients">
+            <div id="nutrient-summary">
+                <!-- Nutrient summary will be appended here -->
+            </div>
+
+        </div>
+
+        <div class="button-container">
+            <form>
+                <button id="clear-meal-plan-day" name="ClearMealPlanDay">Clear</button>
+            </form>
+
+            <button onclick="showNotReadyMessage()">Save</button>
+        </div>
+    </div>
+</div>

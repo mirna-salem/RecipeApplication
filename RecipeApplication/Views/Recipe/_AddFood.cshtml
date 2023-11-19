@@ -1,0 +1,77 @@
+﻿@{
+	Layout = null;
+}
+
+
+@model RecipeApplication.Models.AddFoodModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Add Food</title>
+
+	<style>
+		.food:hover {
+			background: gray;
+			cursor: pointer;
+		}
+	</style>
+
+</head>
+<body>
+
+	<div class="container" style="display:flex; justify-content:center;">
+		<div>
+			@using (Html.BeginForm("AddToMealPlan", "Recipe", FormMethod.Post))
+			{
+
+				@*<div id="searchResults" style="overflow-y: scroll; height:400px;">
+
+					@if (Model != null && Model.Recipes != null && Model.Recipes.Results != null)
+					{
+						@foreach (var item in Model.Recipes.Results)
+						{
+							<div class="food" style="padding:40px;">
+								<input type="radio" name="MealPlan.value.id" value="@item.Id" required>@item.Title
+								<br />
+							</div>
+						}
+					}
+				</div>*@
+
+				// call the display meal partial which returns ID after user clicks add to meal plan
+
+				<div style="display:flex;">
+					<input type="radio" name="MealPlan.slot" id="flexRadioDefault1" value="1" required>
+					<label for="flexRadioDefault1">Breakfast</label>
+
+					<input type="radio" name="MealPlan.slot" id="flexRadioDefault2" value="2">
+					<label for="flexRadioDefault2">Lunch</label>
+
+					<input type="radio" name="MealPlan.slot" id="flexRadioDefault3" value="3">
+					<label for="flexRadioDefault3">Dinner</label>
+				</div>
+
+				<br />
+				<br />
+
+				<div>
+					<input type="number" id="servings" name="MealPlan.value.servings" min="1" />
+					<label for="servings">Servings</label>
+				</div>
+
+
+				<br />
+				<hr />
+
+
+				<input id="Submit" type="submit" value="Add To Meal Plan" />
+			}
+
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,240 @@
+﻿.meal-plan .container {
+    text-align: center;
+}
+
+.meal-plan .generate-meal-plan {
+    text-align: center;
+}
+
+#meal-plan-list h3 {
+    color: #666e75;
+    margin-bottom: 20px;
+    background-color: rgba(206, 18, 18, 0.05);
+    width: 100%;
+    font-weight: 400;
+    padding: 5px;
+    font-family: var(--font-default);
+    letter-spacing: 1px;
+}
+
+.meal-plan .icon-box {
+    text-align: center;
+    background: #fff;
+    padding: 20px 30px 10px 30px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(55, 55, 63, 0.1);
+    transition: 0.3s;
+    box-shadow: 0px 0 30px rgba(55, 55, 63, 0.6);
+    border-radius: 25px;
+}
+
+    .meal-plan .icon-box i {
+        color: var(--color-primary);
+        margin-bottom: 30px;
+        font-size: 20px;
+        margin-bottom: 30px;
+        background: rgba(206, 18, 18, 0.1);
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+    }
+
+    .meal-plan .icon-box h4 {
+        font-size: 20px;
+        font-weight: 400;
+        margin: 0 0 30px 0;
+        font-family: var(--font-secondary);
+        color: #6c757d;
+        font-weight: 320;
+    }
+
+    .meal-plan .icon-box p {
+        font-size: 15px;
+        color: #6c757d;
+    }
+
+
+.ready-in {
+    display: flex;
+    margin-right: 40px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+.servings {
+    display: flex;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+
+i.fa {
+    margin-right: 10px;
+}
+
+.link-container {
+    display: flex;
+    align-items: center;
+}
+
+    .link-container h4 {
+        margin: 0; 
+    }
+
+    .link-container i {
+        margin-left: 5px; 
+    }
+
+
+@media (min-width: 1200px) {
+    .meal-plan .icon-box:hover {
+        transform: scale(1.1);
+    }
+}
+
+
+#meal-plan-description {
+    font-size: 18px;
+    margin: 0;
+    margin-top: 30px;
+    color: #4f4f5a;
+    font-weight: 400;
+    text-transform: capitalize;
+    word-spacing: 3px;
+}
+
+#meal-plan-list {
+    padding: 20px;
+}
+
+.meal-plan .form__label {
+    margin-right: 10px;
+}
+
+.meal-plan .btn-gen-meal-plan {
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 12px 36px;
+    border-radius: 50px;
+    transition: 0.5s;
+    color: #fff;
+    background: var(--color-primary);
+    box-shadow: 0 8px 28px rgba(206, 18, 18, 0.2);
+    border: none;
+}
+
+    .meal-plan .btn-gen-meal-plan:hover {
+        background: rgba(206, 18, 18, 0.8);
+        box-shadow: 0 8px 28px rgba(206, 18, 18, 0.45);
+    }
+
+#choose-diet {
+    padding: 50px;
+}
+
+    #choose-diet label {
+        padding: 10px;
+    }
+
+.meal-plan [type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+    .meal-plan [type=radio] + img {
+        cursor: pointer;
+    }
+
+    .meal-plan [type=radio]:checked + img + span {
+        transform: scale(1.1);
+        color: var(--color-primary);
+        transition: color 0.3s linear;
+        -webkit-transition: color 0.3s linear;
+        -moz-transition: color 0.3s linear;
+    }
+
+#choose-diet .inner-label-diet:hover {
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+#slideBox2 {
+    top: 20px;
+    width: 100%;
+    left: 150%;
+    height: 100%;
+    display:none;
+    transform: translateX(100%); 
+    transition: transform 0.3s ease; 
+}
+
+
+#slide-box-container {
+    display: flex;
+    justify-content: center;
+}
+
+
+#macros {
+    display: flex;
+    justify-content: center;
+}
+
+.macro {
+    padding: 10px;
+    font-family: var(--font-default);
+    color: #7f7f90;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+#cals {
+    color: var(--color-default);
+}
+
+#carbs {
+    color: var(--color-primary);
+}
+
+#fat {
+    color: var(--color-default);
+}
+
+#protein {
+    color: var(--color-primary);
+}
+
+
+.meal-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: var(--font-default);
+}
+
+    .meal-title i.bi {
+        display: inline;
+        margin-left: 5px;
+    }
+
+.meal-details {
+    display: flex;
+}
+
+
+    .meal-details span {
+        margin-top: 4px;
+    }

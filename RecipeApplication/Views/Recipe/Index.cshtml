@@ -1,0 +1,433 @@
+﻿@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Home Page";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>My Recipes</title>
+
+
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+	<!-- Font Awesome Icons-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<!-- Vendor CSS Files -->
+	<link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="~/vendor/aos/aos.css" rel="stylesheet">
+	<link href="~/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+	<!-- CSS Files -->
+	<link href="~/css/main.css" rel="stylesheet">
+	<link href="~/css/homepageSearch.css" rel="stylesheet">
+	<link href="~/css/home-generate-plan.css" rel="stylesheet">
+	<link href="~/css/home-recipes.css" rel="stylesheet">
+	<link href="~/css/home-favorites.css" rel="stylesheet">
+	<link href="~/css/home-home.css" rel="stylesheet">
+
+
+	<!-- =======================================================
+	* Template Name: Yummy - v1.3.0
+	* Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
+	* Author: BootstrapMade.com
+	* License: https://bootstrapmade.com/license/
+	======================================================== -->
+</head>
+
+<body>
+	<div id="preloader"></div>
+
+	<main id="main">
+		<!-- ======= Home Section ======= -->
+		<section id="home" class="home d-flex align-items-center section-bg">
+			<div class="container">
+				<div class="row justify-content-between gy-5">
+					<div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
+						<h2 data-aos="fade-up">Find Healthy<br>Delicious Recipes</h2>
+						<p data-aos="fade-up" data-aos-delay="100">Discover simple recipes for everyday and every meal. Generate a free meal plan or create your own meal plans.</p>
+						<div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+							<a href="#search" class="btn-find-recipe">Find Recipes</a>
+							<a href="#meal-plan" class="btn-create-meal-plan d-flex align-items-center"><span>Create Meal Plans</span></a>
+						</div>
+					</div>
+					<div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
+						<img src="~/img/hero-img.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300">
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Home Section -->
+		
+		<!-- ======= Search Section ======= -->
+		<div id="search" class="search" style="padding: 80px 0;">
+			<div class="container" data-aos="fade-up">
+				<div class="section-header">
+					<h2>Search</h2>
+					<p>Search By <span>Recipe</span> or <span>Ingredient</span></p>
+				</div>
+				<div class="row gy-4 search-img" data-aos="fade-up" data-aos-delay="150">
+					<div class="col-lg-12">
+						<div class="search-bar-container">
+							<div class="row height d-flex justify-content-center align-items-center">
+								<div class="col-md-6">
+									<form asp-controller="Recipe" asp-action="ShowSearchResults" method="get">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="Search" name="SearchPhrase" aria-label="Search" required>
+											<button id="search-button" class="btn btn-outline-primary" type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Search Section -->
+		<!-- ======= Meal Plan Section ======= -->
+		<section id="meal-plan" class="meal-plan section-bg">
+			<div class="container" data-aos="fade-up">
+
+				<div class="section-header">
+					<h2>Meal Plan</h2>
+					<p>Generate a <span>Meal Plan</span></p>
+					<h2 id="meal-plan-description">Simply enter your caloric target for the day and <br />any diet that the meal plan needs to adhere to.</h2>
+				</div>
+
+
+				<div id="slide-box-container">
+					<div id="slideBox1" class="slideBox">
+
+						<div class="generate-meal-plan" id="generate-meal-plan">
+
+
+							<div class="form__group field">
+								<label for="calories" class="form__label">Calories</label>
+								<input type="number" class="form__field" placeholder="####" name="calories" id="typeNumber" required min="0" />
+							</div>
+
+							<div class="row">
+								<div id="choose-diet" class="col-lg-12">
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Gluten Free">
+										<img src="~/img/diets/gluten-free.png" alt="Option 1">
+
+										<span class="inner-label-diet"><br />Gluten Free</span>
+									</label>
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Ketogenic">
+										<img src="~/img/diets/ketogenic-diet.png" alt="Option 2">
+										<span class="inner-label-diet"><br />Ketogenic</span>
+									</label>
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Vegetarian">
+										<img src="~/img/diets/vegetarian-restaurant.png" alt="Option 3">
+										<span class="inner-label-diet"><br />Vegetarian</span>
+									</label>
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="Paleo">
+										<img src="~/img/diets/paleo-diet.png" alt="Option 4">
+										<span class="inner-label-diet"><br />Paleo</span>
+									</label>
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="Vegan">
+										<img src="~/img/diets/vegan.png" alt="Option 5">
+										<span class="inner-label-diet"><br />Vegan</span>
+									</label>
+
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="Pescetarian">
+										<img src="~/img/diets/fish.png" alt="Option 6">
+										<span class="inner-label-diet"><br />Pescetarian</span>
+									</label>
+
+									<label>
+										<input type="radio" name="inlineRadioOptions" id="inlineRadio7" value="No Diet">
+										<img src="~/img/diets/donut.png" alt="Option 7">
+										<span class="inner-label-diet"><br />No Diet</span>
+									</label>
+								</div>
+							</div>
+
+							<input id="slide-next" class="btn-gen-meal-plan" type="button" value="Generate" />
+						</div>
+					</div>
+
+
+					<div id="slideBox2" class="slideBox">
+						<div id="meal-plan-list" class="col-lg-12 d-flex align-items-center">
+							<div class="row gy-4" style="padding:10px;">
+
+								<div class="col-xl-4" data-aos="fade-up" data-aos-delay="200">
+									<div class="icon-box d-flex flex-column justify-content-center align-items-center">
+
+										<h3>Breakfast</h3>
+										<a href="" target="_blank" id="breakfast-link-container" title="View Recipe Details">
+											<h4 class="meal-title" id="breakfast-meal-title"></h4>
+										</a>
+
+										<div class="meal-details">
+											<p id="breakfast-ready-in" class="ready-in"></p>											
+											<p id="breakfast-servings" class="servings"></p>
+										</div>
+
+									</div>
+								</div><!-- End Icon Box -->
+
+								<div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
+									<div class="icon-box d-flex flex-column justify-content-center align-items-center">
+										<h3>Lunch</h3>
+										<a href="" target="_blank" id="lunch-link-container" title="View Recipe Details">
+											<h4 class="meal-title" id="lunch-meal-title"></h4>
+										</a>
+
+										<div class="meal-details">
+											<p id="lunch-ready-in" class="ready-in"></p>											
+											<p id="lunch-servings" class="servings"></p>
+										</div>
+									</div>
+								</div><!-- End Icon Box -->
+
+								<div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
+									<div class="icon-box d-flex flex-column justify-content-center align-items-center">
+										<h3>Dinner</h3>
+										<a href="" target="_blank" id="dinner-link-container" title="View Recipe Details">
+											<h4 class="meal-title" id="dinner-meal-title"></h4>
+										</a>
+
+										<div class="meal-details">
+											<p id="dinner-ready-in" class="ready-in"></p>
+											<p id="dinner-servings" class="servings"></p>
+										</div>
+									</div>
+								</div><!-- End Icon Box -->
+
+								<div id="macros">
+									<p class="macro" id="cals"></p>
+									<p class="macro" id="carbs"></p>
+									<p class="macro" id="fat"></p>
+									<p class="macro" id="protein"></p>
+								</div>
+
+							</div>
+						</div>
+						<input id="new-meal-plan-btn" class="btn-gen-meal-plan" type="button" value="Try Different Plan" />
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<!-- End Meal Plan Section -->
+		<!-- ======= Favorites Section ======= -->
+		<section id="favorites" class="favorites">
+			<div class="container-fluid" data-aos="fade-up">
+
+				<div class="section-header">
+					<h2>Explore</h2>
+					<p>Discover <span>Delicious Recipes</span></p>
+				</div>
+				<div class="slides-3 swiper" data-aos="fade-up" data-aos-delay="100">
+					<div class="swiper-wrapper">
+
+						<div class="swiper-slide favorite-item d-flex flex-column justify-content-end fave-one">
+							<h3>
+								<a href="https://spoonacular.com/recipes/tropical-breakfast-quinoa-663853" target="_blank">
+									Tropical Breakfast Quinoa <i class="bi bi-link"></i>
+								</a>
+							</h3>
+							<div class="price align-self-start">$1.19 <span class="per-serving">Per Serving</span></div>
+							<p class="description">
+								From preparation to the plate, this recipe takes approximately 45 minutes. It is a good option if you're following a gluten free, dairy free, lacto ovo vegetarian, and vegan diet.
+							</p>
+						</div><!-- End favorite item -->
+
+						<div class="swiper-slide favorite-item d-flex flex-column justify-content-end fave-two">
+							<<h3>
+								<a href="https://spoonacular.com/Hawaiian-Poke-(Aloha-Poke)-1697537" target="_blank">
+									Hawaiian Poke Bowl <i class="bi bi-link"></i>
+								</a>
+							</h3>
+							<div class="price align-self-start">$0.62 <span class="per-serving">Per Serving</span></div>
+							<p class="description">
+								Hawaiian Poke (Aloha Poke) could be just the gluten free, dairy free, and pescatarian recipe you've been looking for. From preparation to the plate, this recipe takes around 1 hour.
+							</p>
+						</div><!-- End favorite item -->
+
+						<div class="swiper-slide favorite-item d-flex flex-column justify-content-end fave-three">
+							<<h3>
+								<a href="https://spoonacular.com/recipes/sweet-spicy-cherry-tomato-pasta-662649" target="_blank">
+									Cherry Tomato Pasta
+									<i class="bi bi-link"></i>
+								</a>
+							</h3>
+							<div class="price align-self-start">$3.26 <span class="per-serving">Per Serving</span></div>
+							<p class="description">
+								Sweet, Spicy Cherry Tomato Pastan is a main course that serves 4. From preparation to the plate, this recipe takes about 45 minutes.
+							</p>
+						</div><!-- End favorite item -->
+
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+		</section><!-- End Favorites Section -->
+		<!-- ======= Recipes Section ======= -->
+		<section id="recipes" class="recipes">
+			<div class="container" data-aos="fade-up" data-aos-delay="300">
+				<div class="col-sm-4 recipes-item">
+					<a href="https://spoonacular.com/recipes/lemon-cupcakes-649593" target="_blank">
+						<img src="~/img/more-recipes/more-recipes-1.jpg" class="recipes-img img-fluid" alt="">
+					</a>
+					<h4>Lemon Cupcake</h4>
+					<p>
+						<span>
+							<i class="fa fa-clock-o"></i>
+							45 minutes
+						</span>
+
+						<span>
+							<i class="fa fa-trophy" aria-hidden="true"></i>
+							21%
+						</span>
+					</p>
+				</div><!-- Recipe Item -->
+
+				<div class="col-sm-4 recipes-item">
+					<a href="https://spoonacular.com/recipes/easy-homemade-strawberry-pie-641998" target="_blank">
+						<img src="~/img/more-recipes/more-recipes-2.jpg" class="recipes-img img-fluid" alt="">
+					</a>
+					<h4>Strawberry Pie</h4>
+					<p>
+						<span>
+							<i class="fa fa-clock-o"></i>
+							45 minutes
+						</span>
+
+						<span>
+							<i class="fa fa-trophy" aria-hidden="true"></i>
+							39%
+						</span>
+					</p>
+				</div><!-- Recipe Item -->
+
+				<div class="col-sm-4 recipes-item">
+					<a href="https://spoonacular.com/recipes/little-italy-burger-650181" target="_blank">
+						<img src="~/img/more-recipes/more-recipes-3.jpg" class="recipes-img img-fluid" alt="">
+					</a>
+					<h4>Little Italy Burger</h4>
+					<p>
+						<span>
+							<i class="fa fa-clock-o"></i>
+							45 minutes
+						</span>
+
+						<span>
+							<i class="fa fa-trophy" aria-hidden="true"></i>
+							54%
+						</span>
+					</p>
+				</div><!-- Recipe Item -->
+
+				<div class="col-sm-4 recipes-item">
+					<a href="https://spoonacular.com/recipes/blt-sandwich-635342" target="_blank">
+						<img src="~/img/more-recipes/more-recipes-4.jpg" class="recipes-img img-fluid" alt="">
+					</a>
+					<h4>BLT Sandwich</h4>
+					<p>
+						<span>
+							<i class="fa fa-clock-o"></i>
+							45 minutes
+						</span>
+
+						<span>
+							<i class="fa fa-trophy" aria-hidden="true"></i>
+							54%
+						</span>
+					</p>
+				</div><!-- Recipe Item -->
+
+				<div class="col-sm-4 recipes-item">
+					<a href="https://spoonacular.com/recipes/the-best-chili-715424" target="_blank">
+						<img src="~/img/more-recipes/more-recipes-5.jpg" class="recipes-img img-fluid" alt="">
+					</a>
+					<h4>The Best Chili</h4>
+					<p>
+						<span>
+							<i class="fa fa-clock-o"></i>
+							2 hours 10 minutes
+						</span>
+
+						<span>
+							<i class="fa fa-trophy" aria-hidden="true"></i>
+							96%
+						</span>
+					</p>
+				</div><!-- Recipe Item -->
+
+				<div class="col-sm-4 recipes-item">
+					<a href="https://spoonacular.com/recipes/shrimp-fried-rice-682619" target="_blank">
+						<img src="~/img/more-recipes/more-recipes-6.jpg" class="recipes-img img-fluid" alt="">
+					</a>
+					<h4>Shrimp Fried Rice</h4>
+					<p>
+						<span>
+							<i class="fa fa-clock-o"></i>
+							45 minutes
+						</span>
+
+						<span>
+							<i class="fa fa-trophy" aria-hidden="true"></i>
+							40%
+						</span>
+					</p>
+				</div><!-- Recipe Item -->
+			</div>
+		</section><!-- Recipes Section -->
+
+
+
+
+
+	</main><!-- End #main -->
+
+
+	<a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+	<!-- Vendor JS Files -->
+	<script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="~/vendor/aos/aos.js"></script>
+	<script src="~/vendor/swiper/swiper-bundle.min.js"></script>
+
+	<!-- Search bar this script may be messing up preloader???-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+	<!-- Template Main JS File -->
+	<script src="~/js/main.js"></script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RecipeApplication.Areas.Identity.Data
+
+@inject SignInManager<RecipeApplicationUser> SignInManager
+@inject UserManager<RecipeApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+		@*<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Recipe", new { area = "" })">
+			<button id="logout" type="submit" class="nav-link btn btn-link border-0">Sign out</button>
+		</form>*@
+
+	<a id="logout" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();" class="nav-link btn btn-link border-0">Sign out</a>
+	<form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Recipe", new { area = "" })" method="post">
+		@Html.AntiForgeryToken()
+	</form>
+
+}
+else
+{
+	<a id="login" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+}
+
+
+
+

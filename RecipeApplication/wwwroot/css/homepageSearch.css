@@ -1,0 +1,13 @@
+﻿.search-img {
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)), url("../img/search.jpg") center center;
+    background-size: cover;
+    padding: 300px 0;
+}
+
+#search-button {
+    background-color: white;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
