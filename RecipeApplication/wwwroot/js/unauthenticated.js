@@ -1,5 +1,5 @@
 ﻿function handleUnauthenticatedUser() {
-    var buttons = document.querySelectorAll('.add-to-meal-plan-button');
+    var buttons = document.querySelectorAll('.add-to-meal-plan-button-before-selection');
 
     buttons.forEach(function (button) {
         button.addEventListener('click', function (event) {
