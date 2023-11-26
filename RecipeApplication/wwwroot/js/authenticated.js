@@ -74,70 +74,89 @@
     });
 
     function addMealPlanItem(selectedSlot, selectedServings) {
-        $.ajax({
-            type: "POST",
-            url: "/Recipe/AddMealPlanItem",
-            data: { itemId: selectedId, itemTitle: selectedTitle, itemSourceUrl: selectedUrl, itemSlot: selectedSlot, itemServing: selectedServings },
-            dataType: "json",
-            success: function (response) {
 
-                sidebarEl.style.transform = "translate(0px)";
-                sidebarEl.scrollTop = 0;
-                shiftedDiv.style.marginLeft = 200 + 'px';
-
-                // Clear 
-                clearList(breakfastList);
-                clearList(lunchList);
-                clearList(dinnerList);
-                clearList(nutrientSum);
+        var selectedSlotValid = selectedSlot !== undefined;
+        var selectedServingsValid = selectedServings !== '';
 
 
-                // Breakfast
-                if (response.items.some(item => item.slot === 1)) {
-                    response.items.forEach(function (item) {
-                        createListItem(item, breakfastList, 1);
-                    });
-                } else {
-                    breakfastList.innerHTML = "<div>No breakfast added yet.</div>";
-                }
+        if (selectedSlotValid && selectedServingsValid) {
+            $.ajax({
+                type: "POST",
+                url: "/Recipe/AddMealPlanItem",
+                data: { itemId: selectedId, itemTitle: selectedTitle, itemSourceUrl: selectedUrl, itemSlot: selectedSlot, itemServing: selectedServings },
+                dataType: "json",
+                success: function (response) {
 
-                // Lunch
-                if (response.items.some(item => item.slot === 2)) {
-                    response.items.forEach(function (item) {
-                        createListItem(item, lunchList, 2);
-                    });
-                } else {
-                    lunchList.innerHTML = "<div>No lunch added yet.</div>";
-                }
+                    sidebarEl.style.transform = "translate(0px)";
+                    sidebarEl.scrollTop = 0;
+                    shiftedDiv.style.marginLeft = 200 + 'px';
 
-                // Dinner
-                if (response.items.some(item => item.slot === 3)) {
-                    response.items.forEach(function (item) {
-                        createListItem(item, dinnerList, 3);
-                    });
-                } else {
-                    dinnerList.innerHTML = "<div>No dinner added yet.</div>";
-                }
+                    // Clear 
+                    clearList(breakfastList);
+                    clearList(lunchList);
+                    clearList(dinnerList);
+                    clearList(nutrientSum);
 
 
-                // Nutrient Summary
-                response.nutritionSummary.nutrients.forEach(function (nutrient) {
-                    if (nutrient.name == "Calories" || nutrient.name == "Fat" || nutrient.name == "Protein" || nutrient.name == "Carbohydrates") {
-                        var summary = document.createElement("p");
-                        summary.innerHTML = nutrient.name + ": " + nutrient.amount + "" + nutrient.unit;
-                        nutrientSum.appendChild(summary);
+                    // Breakfast
+                    if (response.items.some(item => item.slot === 1)) {
+                        response.items.forEach(function (item) {
+                            createListItem(item, breakfastList, 1);
+                        });
+                    } else {
+                        breakfastList.innerHTML = "<div>No breakfast added yet.</div>";
                     }
-                });
+
+                    // Lunch
+                    if (response.items.some(item => item.slot === 2)) {
+                        response.items.forEach(function (item) {
+                            createListItem(item, lunchList, 2);
+                        });
+                    } else {
+                        lunchList.innerHTML = "<div>No lunch added yet.</div>";
+                    }
+
+                    // Dinner
+                    if (response.items.some(item => item.slot === 3)) {
+                        response.items.forEach(function (item) {
+                            createListItem(item, dinnerList, 3);
+                        });
+                    } else {
+                        dinnerList.innerHTML = "<div>No dinner added yet.</div>";
+                    }
 
 
-                // Set side bar to open
-                isSidebarOpen = true;
+                    // Nutrient Summary
+                    response.nutritionSummary.nutrients.forEach(function (nutrient) {
+                        if (nutrient.name == "Calories" || nutrient.name == "Fat" || nutrient.name == "Protein" || nutrient.name == "Carbohydrates") {
+                            var summary = document.createElement("p");
+                            summary.innerHTML = nutrient.name + ": " + nutrient.amount + "" + nutrient.unit;
+                            nutrientSum.appendChild(summary);
+                        }
+                    });
 
-            },
-            error: function (error) {
-                console.error("Error:", error);
+
+                    // Set side bar to open
+                    isSidebarOpen = true;
+
+                },
+                error: function (error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+        else {
+            if (!selectedSlotValid && !selectedServingsValid) {
+                alert('Please select meal type and enter the number of servings before proceeding.');
+            } else if (!selectedServingsValid) {
+                alert('Please enter the number of servings before proceeding.');
+            } else {
+                alert('Please select meal type before proceeding.');
             }
-        });
+        }
+
+
+        
     }
 
     function createListItem(item, list, slotNr) {
