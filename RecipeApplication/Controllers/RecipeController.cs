@@ -14,13 +14,16 @@ namespace RecipeApplication.Controllers
 		static readonly HttpClient client = new HttpClient();
 		private readonly RecipeApplicationDbContext _context;
 		private readonly ILogger<RecipeController> _logger;
-		private string apiKey = Environment.GetEnvironmentVariable("API_KEY") ?? throw new InvalidOperationException("API_KEY not found.");
+		private readonly IConfiguration _configuration;
+		private string apiKey;
 
 		
-		public RecipeController(RecipeApplicationDbContext context, ILogger<RecipeController> logger)
+		public RecipeController(RecipeApplicationDbContext context, ILogger<RecipeController> logger, IConfiguration configuration)
 		{
 			_context = context;
 			_logger = logger;
+			_configuration = configuration;
+			apiKey = _configuration["SpoonacularApiKey"] ?? Environment.GetEnvironmentVariable("API_KEY") ?? throw new InvalidOperationException("API_KEY not found. Please set it in appsettings.Development.json or as an environment variable.");
 		}
 
 		public IActionResult Index()

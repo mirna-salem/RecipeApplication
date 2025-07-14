@@ -1,4 +1,7 @@
+# Visual Studio
 .vs/
+
+# Build results
 bin/
 obj/
 
@@ -8,4 +11,36 @@ obj/
 *.userosscache
 *.sln.docstates
 
+# Scaffolding
 ScaffoldingReadMe.txt
+
+# Local settings and secrets
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.secret.json
+*.env
+.env*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Rider
+.idea/
+*.sln.iml
+
+# Logs
+*.log
+logs/
+
+# Publish profiles
+Properties/PublishProfiles/
+
+# Database files
+*.mdf
+*.ldf
+*.ndf
+
+# Others
+TestResults/

@@ -4,7 +4,10 @@ using RecipeApplication.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? throw new InvalidOperationException("Connection string 'CONNECTION_STRING' not found.");
+// Get connection string from configuration or environment variable
+var connectionString = builder.Configuration.GetConnectionString("RecipeApplicationDbContextConnection") 
+    ?? Environment.GetEnvironmentVariable("CONNECTION_STRING") 
+    ?? throw new InvalidOperationException("Connection string 'RecipeApplicationDbContextConnection' not found.");
 
 builder.Services.AddDbContext<RecipeApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString,
