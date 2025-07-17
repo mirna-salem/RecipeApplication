@@ -6,6 +6,8 @@ using System.Text;
 using RecipeApplication.Areas.Identity.Data;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using RecipeApplication.Services;
 
 namespace RecipeApplication.Controllers
 {
@@ -15,14 +17,18 @@ namespace RecipeApplication.Controllers
 		private readonly RecipeApplicationDbContext _context;
 		private readonly ILogger<RecipeController> _logger;
 		private readonly IConfiguration _configuration;
+		private readonly bool _useDemoData;
+		private readonly DemoDataService _demoDataService;
 		private string apiKey;
 
 		
-		public RecipeController(RecipeApplicationDbContext context, ILogger<RecipeController> logger, IConfiguration configuration)
+		public RecipeController(RecipeApplicationDbContext context, ILogger<RecipeController> logger, IConfiguration configuration, IWebHostEnvironment env)
 		{
 			_context = context;
 			_logger = logger;
 			_configuration = configuration;
+			_useDemoData = env.IsDevelopment();
+			_demoDataService = new DemoDataService();
 			apiKey = _configuration["SpoonacularApiKey"] ?? Environment.GetEnvironmentVariable("API_KEY") ?? throw new InvalidOperationException("API_KEY not found. Please set it in appsettings.Development.json or as an environment variable.");
 		}
 
@@ -46,16 +52,24 @@ namespace RecipeApplication.Controllers
 		{
 			try
 			{
-				// Construct the search URL
-				string searchUrl = $"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&query={searchPhrase}&number=6&addRecipeInformation=true";
+				RecipeModel recipeModel;
+				if (_useDemoData)
+				{
+					recipeModel = _demoDataService.GetDemoRecipes(searchPhrase);
+				}
+				else
+				{
+					// Construct the search URL
+					string searchUrl = $"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&query={searchPhrase}&number=6&addRecipeInformation=true";
 
-				// Send the HTTP request and read the response
-				HttpResponseMessage searchResponse = await client.GetAsync(searchUrl);
-				searchResponse.EnsureSuccessStatusCode();
-				string searchResponseBody = await searchResponse.Content.ReadAsStringAsync();
+					// Send the HTTP request and read the response
+					HttpResponseMessage searchResponse = await client.GetAsync(searchUrl);
+					searchResponse.EnsureSuccessStatusCode();
+					string searchResponseBody = await searchResponse.Content.ReadAsStringAsync();
 
-				// Deserialize the JSON response into a RecipeModel object
-				RecipeModel recipeModel = JsonConvert.DeserializeObject<RecipeModel>(searchResponseBody);
+					// Deserialize the JSON response into a RecipeModel object
+					recipeModel = JsonConvert.DeserializeObject<RecipeModel>(searchResponseBody);
+				}
 
 				AddFoodModel afm = new AddFoodModel
 				{
@@ -197,37 +211,39 @@ namespace RecipeApplication.Controllers
 		{
 			try
 			{
-				string user = GetUserByIdentity().SpoonacularUsername;
-				string date = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
-				string hash = GetUserByIdentity().SpoonacularHash;
-
-				string url = string.Format("https://api.spoonacular.com/mealplanner/{0}/day/{1}?apiKey={2}&hash={3}", user, date, apiKey, hash);
-
-				using var response = await client.GetAsync(url);
-
-				if (response.IsSuccessStatusCode)
+				ShowMealPlan mealPlan;
+				if (_useDemoData)
 				{
-					string responseBody = await response.Content.ReadAsStringAsync();
-					ShowMealPlan mealPlan = JsonConvert.DeserializeObject<ShowMealPlan>(responseBody)
-						?? throw new JsonException("Error deserializing meal plan data.");
-
+					mealPlan = _demoDataService.GetDemoMealPlan();
 					return Json(mealPlan);
 				}
+				else
+				{
+					string user = GetUserByIdentity().SpoonacularUsername;
+					string date = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
+					string hash = GetUserByIdentity().SpoonacularHash;
 
-				// Handle non-successful responses here (e.g., log the error, provide user feedback).
-				// You may choose to return a different partial view or take other actions.
-				return View("Index");
+					string url = string.Format("https://api.spoonacular.com/mealplanner/{0}/day/{1}?apiKey={2}&hash={3}", user, date, apiKey, hash);
+
+					using var response = await client.GetAsync(url);
+
+					if (response.IsSuccessStatusCode)
+					{
+						string responseBody = await response.Content.ReadAsStringAsync();
+						mealPlan = JsonConvert.DeserializeObject<ShowMealPlan>(responseBody)
+							?? throw new JsonException("Error deserializing meal plan data.");
+
+						return Json(mealPlan);
+					}
+
+					// Handle non-successful responses here (e.g., log the error, provide user feedback).
+					// You may choose to return a different partial view or take other actions.
+					return View("Index");
+				}
 			}
-			catch (HttpRequestException ex)
+			catch (Exception ex)
 			{
-				// Log the exception
-				_logger.LogError(ex, "HTTP request error.");
-				return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-			}
-			catch (JsonException ex)
-			{
-				// Log the exception
-				_logger.LogError(ex, "JSON deserialization error.");
+				_logger.LogError(ex, "An error occurred while displaying the meal plan.");
 				return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 			}
 		}
