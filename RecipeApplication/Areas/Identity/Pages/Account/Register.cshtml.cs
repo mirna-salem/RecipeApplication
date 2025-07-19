@@ -20,6 +20,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RecipeApplication.Areas.Identity.Data;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Text.Unicode;
 
 namespace RecipeApplication.Areas.Identity.Pages.Account
 {
@@ -31,13 +35,17 @@ namespace RecipeApplication.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<RecipeApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<RecipeApplicationUser> userManager,
             IUserStore<RecipeApplicationUser> userStore,
             SignInManager<RecipeApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWebHostEnvironment env,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +53,8 @@ namespace RecipeApplication.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _env = env;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -116,6 +126,7 @@ namespace RecipeApplication.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                // Always connect to Spoonacular API to get username/hash
                 await ConnectUserToApi(user);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -184,29 +195,24 @@ namespace RecipeApplication.Areas.Identity.Pages.Account
 
         private async Task ConnectUserToApi(RecipeApplicationUser user)
         {
-            string appId = Environment.GetEnvironmentVariable("API_KEY");
-            string url = string.Format("https://api.spoonacular.com/users/connect?apiKey={0}", appId);
-
-            JsonSerializerSettings settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            };
-
-            var json = JsonConvert.SerializeObject(user, settings);
-            var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+            string apiKey = _configuration["SpoonacularApiKey"] ?? Environment.GetEnvironmentVariable("API_KEY");
+            string url = $"https://api.spoonacular.com/users/connect?apiKey={apiKey}";
 
             var client = new HttpClient();
-            var response = await client.PostAsync(url, stringContent);
-
+            var response = await client.PostAsync(url, null);
             response.EnsureSuccessStatusCode();
-            string responseBody = response.Content.ReadAsStringAsync().Result;
+            string responseBody = await response.Content.ReadAsStringAsync();
 
-            RecipeApplicationUser userInfo = JsonConvert.DeserializeObject<RecipeApplicationUser>(responseBody) ?? throw new ArgumentNullException(nameof(responseBody));
+            // DTO for Spoonacular response
+            var userInfo = JsonConvert.DeserializeObject<SpoonacularUserResponse>(responseBody) ?? throw new ArgumentNullException(nameof(responseBody));
+            user.SpoonacularUsername = userInfo.username;
+            user.SpoonacularHash = userInfo.hash;
+        }
 
-            user.SpoonacularUsername = userInfo.SpoonacularUsername;
-            user.SpoonacularPassword = userInfo.SpoonacularPassword;
-            user.SpoonacularHash = userInfo.SpoonacularHash;
-
+        private class SpoonacularUserResponse
+        {
+            public string username { get; set; }
+            public string hash { get; set; }
         }
     }
 }

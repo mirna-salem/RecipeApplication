@@ -27,7 +27,7 @@ namespace RecipeApplication.Controllers
 			_context = context;
 			_logger = logger;
 			_configuration = configuration;
-			_useDemoData = env.IsDevelopment();
+			_useDemoData = false; // Force production mode for local testing
 			_demoDataService = new DemoDataService();
 			apiKey = _configuration["SpoonacularApiKey"] ?? Environment.GetEnvironmentVariable("API_KEY") ?? throw new InvalidOperationException("API_KEY not found. Please set it in appsettings.Development.json or as an environment variable.");
 		}
@@ -94,6 +94,11 @@ namespace RecipeApplication.Controllers
 
 		public async Task<IActionResult> ClearMealPlanDay()
 		{
+			if (_useDemoData)
+			{
+				// In demo mode, just return success
+				return NoContent();
+			}
 			string user = GetUserByIdentity().SpoonacularUsername;
 			string date = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
 			string hash = GetUserByIdentity().SpoonacularHash;
@@ -124,6 +129,12 @@ namespace RecipeApplication.Controllers
 		{
 			try
 			{
+				if (_useDemoData)
+				{
+					// In demo mode, just pretend to add the item and return a fake meal plan
+					var mealPlan = _demoDataService.GetDemoMealPlan();
+					return Json(mealPlan);
+				}
 				// Create MealPlannerModel
 				MealPlannerModel MPM = new MealPlannerModel
 				{
@@ -151,21 +162,34 @@ namespace RecipeApplication.Controllers
 				// Construct the API endpoint URL
 				var endpoint = new Uri($"https://api.spoonacular.com/mealplanner/{user.SpoonacularUsername}/items?apiKey={apiKey}&hash={user.SpoonacularHash}");
 
-
 				// Send an asynchronous HTTP POST request to the API
 				var response = await client.PostAsync(endpoint, content);
 
 				// Ensure the response indicates success (HTTP status code 2xx)
 				if (response.IsSuccessStatusCode)
 				{
-					return RedirectToAction("DisplayMealPlan");
+					// Get the updated meal plan
+					string date = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
+					string hash = user.SpoonacularHash;
+					string url = $"https://api.spoonacular.com/mealplanner/{user.SpoonacularUsername}/day/{date}?apiKey={apiKey}&hash={hash}";
+					using var mealPlanResponse = await client.GetAsync(url);
+					if (mealPlanResponse.IsSuccessStatusCode)
+					{
+						string responseBody = await mealPlanResponse.Content.ReadAsStringAsync();
+						var mealPlan = JsonConvert.DeserializeObject<ShowMealPlan>(responseBody);
+						return Json(mealPlan);
+					}
+					// If meal plan fetch fails, return JSON error
+					return Json(new { success = false, error = "Failed to fetch updated meal plan." });
 				}
 
-				return View("Index");
+				// If API call fails, return JSON error
+				return Json(new { success = false, error = "API call to Spoonacular failed." });
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				_logger.LogError(ex, "Error adding meal plan item.");
+				return Json(new { success = false, error = ex.Message });
 			}
 		}
 
@@ -211,35 +235,33 @@ namespace RecipeApplication.Controllers
 		{
 			try
 			{
-				ShowMealPlan mealPlan;
 				if (_useDemoData)
 				{
-					mealPlan = _demoDataService.GetDemoMealPlan();
+					var demoMealPlan = _demoDataService.GetDemoMealPlan();
+					return Json(demoMealPlan);
+				}
+				// Remove _useDemoData shortcut: always use real logic
+				ShowMealPlan mealPlan;
+				string user = GetUserByIdentity().SpoonacularUsername;
+				string date = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
+				string hash = GetUserByIdentity().SpoonacularHash;
+
+				string url = string.Format("https://api.spoonacular.com/mealplanner/{0}/day/{1}?apiKey={2}&hash={3}", user, date, apiKey, hash);
+
+				using var response = await client.GetAsync(url);
+
+				if (response.IsSuccessStatusCode)
+				{
+					string responseBody = await response.Content.ReadAsStringAsync();
+					mealPlan = JsonConvert.DeserializeObject<ShowMealPlan>(responseBody)
+						?? throw new JsonException("Error deserializing meal plan data.");
+
 					return Json(mealPlan);
 				}
-				else
-				{
-					string user = GetUserByIdentity().SpoonacularUsername;
-					string date = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
-					string hash = GetUserByIdentity().SpoonacularHash;
 
-					string url = string.Format("https://api.spoonacular.com/mealplanner/{0}/day/{1}?apiKey={2}&hash={3}", user, date, apiKey, hash);
-
-					using var response = await client.GetAsync(url);
-
-					if (response.IsSuccessStatusCode)
-					{
-						string responseBody = await response.Content.ReadAsStringAsync();
-						mealPlan = JsonConvert.DeserializeObject<ShowMealPlan>(responseBody)
-							?? throw new JsonException("Error deserializing meal plan data.");
-
-						return Json(mealPlan);
-					}
-
-					// Handle non-successful responses here (e.g., log the error, provide user feedback).
-					// You may choose to return a different partial view or take other actions.
-					return View("Index");
-				}
+				// Handle non-successful responses here (e.g., log the error, provide user feedback).
+				// You may choose to return a different partial view or take other actions.
+				return View("Index");
 			}
 			catch (Exception ex)
 			{

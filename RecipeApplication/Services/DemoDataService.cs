@@ -53,6 +53,116 @@ namespace RecipeApplication.Services
                     VeryPopular = false,
                     AggregateLikes = 75,
                     HealthScore = 95
+                },
+                new Recipe
+                {
+                    Id = 3,
+                    Title = "Chocolate Lava Cake",
+                    ReadyInMinutes = 25,
+                    Servings = 2,
+                    Image = "https://spoonacular.com/recipeImages/715594-556x370.jpg", // Chocolate Lava Cake
+                    SourceUrl = "https://example.com/recipe3",
+                    Summary = "A decadent molten chocolate lava cake with a gooey center.",
+                    Cuisines = new List<string> { "French" },
+                    DishTypes = new List<string> { "dessert" },
+                    Diets = new List<string> { "vegetarian" },
+                    Vegetarian = true,
+                    Vegan = false,
+                    GlutenFree = false,
+                    DairyFree = false,
+                    VeryHealthy = false,
+                    Cheap = false,
+                    VeryPopular = true,
+                    AggregateLikes = 210,
+                    HealthScore = 40
+                },
+                new Recipe
+                {
+                    Id = 4,
+                    Title = "Chocolate Chip Pancakes",
+                    ReadyInMinutes = 20,
+                    Servings = 4,
+                    Image = "https://spoonacular.com/recipeImages/639535-556x370.jpg", // Chocolate Chip Pancakes
+                    SourceUrl = "https://example.com/recipe4",
+                    Summary = "Fluffy pancakes loaded with melty chocolate chips.",
+                    Cuisines = new List<string> { "American" },
+                    DishTypes = new List<string> { "breakfast" },
+                    Diets = new List<string> { "vegetarian" },
+                    Vegetarian = true,
+                    Vegan = false,
+                    GlutenFree = false,
+                    DairyFree = false,
+                    VeryHealthy = false,
+                    Cheap = true,
+                    VeryPopular = true,
+                    AggregateLikes = 180,
+                    HealthScore = 55
+                },
+                new Recipe
+                {
+                    Id = 5,
+                    Title = "Spicy Mexican Hot Chocolate",
+                    ReadyInMinutes = 10,
+                    Servings = 2,
+                    Image = "https://spoonacular.com/recipeImages/632660-556x370.jpg", // Mexican Hot Chocolate
+                    SourceUrl = "https://example.com/recipe5",
+                    Summary = "Rich hot chocolate with a hint of cinnamon and chili.",
+                    Cuisines = new List<string> { "Mexican" },
+                    DishTypes = new List<string> { "beverage" },
+                    Diets = new List<string> { "vegetarian", "gluten free" },
+                    Vegetarian = true,
+                    Vegan = false,
+                    GlutenFree = true,
+                    DairyFree = false,
+                    VeryHealthy = false,
+                    Cheap = true,
+                    VeryPopular = false,
+                    AggregateLikes = 95,
+                    HealthScore = 30
+                },
+                new Recipe
+                {
+                    Id = 6,
+                    Title = "Vegan Chocolate Mousse",
+                    ReadyInMinutes = 15,
+                    Servings = 3,
+                    Image = "https://spoonacular.com/recipeImages/638101-556x370.jpg", // Vegan Chocolate Mousse
+                    SourceUrl = "https://example.com/recipe6",
+                    Summary = "A creamy, dairy-free chocolate mousse made with avocado.",
+                    Cuisines = new List<string> { "French" },
+                    DishTypes = new List<string> { "dessert" },
+                    Diets = new List<string> { "vegan", "gluten free" },
+                    Vegetarian = true,
+                    Vegan = true,
+                    GlutenFree = true,
+                    DairyFree = true,
+                    VeryHealthy = true,
+                    Cheap = false,
+                    VeryPopular = true,
+                    AggregateLikes = 130,
+                    HealthScore = 80
+                },
+                new Recipe
+                {
+                    Id = 7,
+                    Title = "Chocolate Peanut Butter Smoothie",
+                    ReadyInMinutes = 5,
+                    Servings = 1,
+                    Image = "https://spoonacular.com/recipeImages/654857-556x370.jpg", // Chocolate Peanut Butter Smoothie
+                    SourceUrl = "https://example.com/recipe7",
+                    Summary = "A quick and delicious smoothie with chocolate and peanut butter.",
+                    Cuisines = new List<string> { "American" },
+                    DishTypes = new List<string> { "beverage", "snack" },
+                    Diets = new List<string> { "vegetarian", "gluten free" },
+                    Vegetarian = true,
+                    Vegan = false,
+                    GlutenFree = true,
+                    DairyFree = false,
+                    VeryHealthy = false,
+                    Cheap = true,
+                    VeryPopular = true,
+                    AggregateLikes = 160,
+                    HealthScore = 60
                 }
                 // Add more demo recipes as needed
             };

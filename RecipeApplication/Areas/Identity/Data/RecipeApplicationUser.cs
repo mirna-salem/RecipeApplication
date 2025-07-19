@@ -12,10 +12,10 @@ namespace RecipeApplication.Areas.Identity.Data;
 public class RecipeApplicationUser : IdentityUser
 {
     [DataMember(Name = "username")]
-    public string SpoonacularUsername { get; set; }
+    public string? SpoonacularUsername { get; set; }
     [DataMember(Name = "spoonacularPassword")]
-    public string SpoonacularPassword { get; set; }
+    public string? SpoonacularPassword { get; set; }
     [DataMember(Name = "hash")]
-    public string SpoonacularHash { get; set; }
+    public string? SpoonacularHash { get; set; }
 }
 

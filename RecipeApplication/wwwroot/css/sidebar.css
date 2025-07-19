@@ -8,8 +8,6 @@
     width: 250px;
     max-width: 250px;
     box-shadow: 10px 10px 10px rgba(0,0,0,0.3);
-    transform: translate(-260px);
-    transition: transform 0.5s;
     color: white;
     border-radius: 0px 20px 20px 0px;
     overflow-y: auto;
@@ -17,6 +15,11 @@
     height: 80vh;
     position: fixed;
     opacity: 0.95;
+}
+
+#sidebar {
+  transform: translate(-260px); /* hidden by default */
+  transition: transform 0.3s;
 }
 
 h5 {

@@ -11,20 +11,20 @@
 		public bool VeryPopular { get; set; }
 		public bool Sustainable { get; set; }
 		public bool LowFodmap { get; set; }
-		public int WeightWatcherSmartPoints { get; set; }
+		public int? WeightWatcherSmartPoints { get; set; }
 		public string Gaps { get; set; }
-		public int PreparationMinutes { get; set; }
-		public int CookingMinutes { get; set; }
-		public int AggregateLikes { get; set; }
-		public double HealthScore { get; set; }
+		public int? PreparationMinutes { get; set; }
+		public int? CookingMinutes { get; set; }
+		public int? AggregateLikes { get; set; }
+		public double? HealthScore { get; set; }
 		public string CreditsText { get; set; }
 		public string License { get; set; }
 		public string SourceName { get; set; }
-		public double PricePerServing { get; set; }
+		public double? PricePerServing { get; set; }
 		public int Id { get; set; }
 		public string Title { get; set; }
-		public int ReadyInMinutes { get; set; }
-		public int Servings { get; set; }
+		public int? ReadyInMinutes { get; set; }
+		public int? Servings { get; set; }
 		public string SourceUrl { get; set; }
 		public string Image { get; set; }
 		public string ImageType { get; set; }

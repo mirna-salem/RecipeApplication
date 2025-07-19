@@ -86,6 +86,10 @@
                 data: { itemId: selectedId, itemTitle: selectedTitle, itemSourceUrl: selectedUrl, itemSlot: selectedSlot, itemServing: selectedServings },
                 dataType: "json",
                 success: function (response) {
+                    if (!response.items) {
+                        alert("Meal plan data is missing or invalid. Please check your API credentials or try again later.");
+                        return;
+                    }
 
                     sidebarEl.style.transform = "translate(0px)";
                     sidebarEl.scrollTop = 0;
@@ -99,7 +103,7 @@
 
 
                     // Breakfast
-                    if (response.items.some(item => item.slot === 1)) {
+                    if (Array.isArray(response.items) && response.items.some(item => item.slot === 1)) {
                         response.items.forEach(function (item) {
                             createListItem(item, breakfastList, 1);
                         });
@@ -108,7 +112,7 @@
                     }
 
                     // Lunch
-                    if (response.items.some(item => item.slot === 2)) {
+                    if (Array.isArray(response.items) && response.items.some(item => item.slot === 2)) {
                         response.items.forEach(function (item) {
                             createListItem(item, lunchList, 2);
                         });
@@ -117,7 +121,7 @@
                     }
 
                     // Dinner
-                    if (response.items.some(item => item.slot === 3)) {
+                    if (Array.isArray(response.items) && response.items.some(item => item.slot === 3)) {
                         response.items.forEach(function (item) {
                             createListItem(item, dinnerList, 3);
                         });
@@ -141,6 +145,17 @@
 
                 },
                 error: function (error) {
+                    // Try to parse and display error message from JSON response
+                    let errorMsg = "An error occurred while adding to meal plan.";
+                    if (error && error.responseText) {
+                        try {
+                            const resp = JSON.parse(error.responseText);
+                            if (resp.error) {
+                                errorMsg = resp.error;
+                            }
+                        } catch (e) { /* ignore parse errors */ }
+                    }
+                    alert(errorMsg);
                     console.error("Error:", error);
                 }
             });
