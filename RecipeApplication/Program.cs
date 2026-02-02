@@ -22,6 +22,12 @@ builder.Services.AddDefaultIdentity<RecipeApplicationUser>(options => options.Si
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Register Application Insights
+builder.Services.AddApplicationInsightsTelemetry(options =>
+{
+	options.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+});
+
 // HTTPS port configuration
 builder.Services.Configure<Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionOptions>(options =>
 {
